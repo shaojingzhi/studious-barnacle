@@ -1,0 +1,91 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+class Girl{
+    private: int id;//?Ƭid
+    public: float currentScore;//??ȼ???Ĭ?ֵΪ1400
+    private: float expectedWin;//??ʤ?(?????Ϊ0.5)
+    private: int result;//ʤ??ֵ
+    public: Girl():currentScore(1400), expectedWin(0.5){
+	}
+    public: getCurrentScore();
+    public: setCurrentScore(float x);
+    public: getExpectedWin();
+    public: setExpectedWin(float x);
+
+};
+
+Girl::getCurrentScore()
+{
+    return currentScore;
+}
+Girl::setCurrentScore(float x)
+{
+    currentScore = x;
+    return currentScore;
+}
+Girl::getExpectedWin()
+{
+    return expectedWin;
+}
+Girl::setExpectedWin(float sub)
+{
+    float temp = sub/400;
+    expectedWin = 1/(1+(float)pow(10,temp));
+    return expectedWin;
+}
+
+
+class ToCompare{
+private: Girl lostGirl;
+private: Girl winGirl;
+
+public: ToCompare(Girl win,Girl lost){
+    lostGirl = lost;
+    winGirl = win;
+}
+
+
+public: void computeExpectedWin(){
+    if(winGirl.getCurrentScore() == lostGirl.getCurrentScore()){//???˫???ĵ?ǰ?ȼ?????????ʤ???Ϊ0.5
+        winGirl.setExpectedWin(0.5f);
+        lostGirl.setExpectedWin(0.5f);
+        return;
+    }
+    else{//????????
+        float winSub = lostGirl.getCurrentScore() - winGirl.getCurrentScore();
+        float lostSub = winGirl.getCurrentScore() - lostGirl.getCurrentScore();
+        winGirl.setExpectedWin(winSub);
+        lostGirl.setExpectedWin(lostSub);
+        return;
+    }
+}
+
+/*public: float setExpecteWin(float sub){
+    float temp=sub/400;
+    return 1/(1+(float)pow(10,temp));
+}
+*/
+public: void toComputeNewScore(){
+    float oldScore = winGirl.getCurrentScore();//?????ǰ?ȼ???
+    //????û?????Ƚ?????ĵȼ???ʤ?????result=1???????Ϊ0
+    winGirl.setCurrentScore(computeNewScore(1,oldScore,winGirl.getExpectedWin()));
+
+    oldScore = lostGirl.getCurrentScore();
+    lostGirl.setCurrentScore(computeNewScore(0,oldScore,lostGirl.getExpectedWin()));
+    return;
+	}
+    
+    
+public: float computeNewScore(int result,float oldScore,float expectedWin){
+    float temp = result - expectedWin;
+    float currentScore = oldScore + 10 * temp;
+    return currentScore;
+}
+};
+
+int main(){
+    
+}
+
+
